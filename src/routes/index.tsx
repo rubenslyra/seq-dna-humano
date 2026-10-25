@@ -32,7 +32,7 @@ function Deck() {
     return () => ro.disconnect();
   }, []);
   useEffect(() => {
-    document.title = `${slide}/${slides.length} — ${slides[i].title}`;
+    document.title = `${slide}/${slides.length} — ${slides[i]!.title}`;
     const k = (e: KeyboardEvent) => {
       if (["ArrowRight", " ", "PageDown"].includes(e.key)) go(i + 1);
       if (["ArrowLeft", "PageUp"].includes(e.key)) go(i - 1);
@@ -43,12 +43,12 @@ function Deck() {
   });
 
   const startX = useRef(0);
-  const S = slides[i].C;
+  const S = slides[i]!.C;
   return (
     <main className="flex h-screen flex-col bg-slide-bg text-slide-fg">
       <div ref={box} className="relative flex-1 overflow-hidden"
-        onTouchStart={(e) => (startX.current = e.touches[0].clientX)}
-        onTouchEnd={(e) => { const dx = e.changedTouches[0].clientX - startX.current; if (Math.abs(dx) > 50) go(dx < 0 ? i + 1 : i - 1); }}>
+        onTouchStart={(e) => (startX.current = e.touches[0]!.clientX)}
+        onTouchEnd={(e) => { const dx = e.changedTouches[0]!.clientX - startX.current; if (Math.abs(dx) > 50) go(dx < 0 ? i + 1 : i - 1); }}>
         <div key={i} className="absolute left-1/2 top-1/2 -ml-[960px] -mt-[540px]" style={{ transform: `scale(${scale})` }}>
           <S />
         </div>
