@@ -3,6 +3,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { slides } from "@/components/deck/slides";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { PresenterAssistant } from '@/components/deck/presenter-assistant';
+import { ignoreDeckKeys } from '@/lib/presenter/context';
 
 export const Route = createFileRoute("/")({
   validateSearch: (s: Record<string, unknown>): { slide?: number } => ({ slide: Math.min(Math.max(Math.trunc(Number(s["slide"])) || 1, 1), slides.length) }),
@@ -25,6 +27,7 @@ function Deck() {
   const i = slide - 1;
   const box = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(0.5);
+  const [assistantOpen, setAssistantOpen] = useState(false);
   const go = useCallback((n: number) => navigate({ search: { slide: Math.min(Math.max(n, 0), slides.length - 1) + 1 }, replace: true }), [navigate]);
 
   useEffect(() => {
@@ -37,13 +40,14 @@ function Deck() {
   useEffect(() => {
     document.title = `${slide}/${slides.length} — ${slides[i]?.title ?? "Genoma Humano"}`;
     const k = (e: KeyboardEvent) => {
+      if (ignoreDeckKeys(e.target, assistantOpen)) return;
       if (["ArrowRight", " ", "PageDown"].includes(e.key)) { e.preventDefault(); go(i + 1); }
       if (["ArrowLeft", "PageUp"].includes(e.key)) { e.preventDefault(); go(i - 1); }
       if (e.key === "f") document.documentElement.requestFullscreen?.();
     };
     window.addEventListener("keydown", k);
     return () => window.removeEventListener("keydown", k);
-  }, [slide, i, go]);
+  }, [slide, i, go, assistantOpen]);
 
   const startX = useRef(0);
   const S = slides[i]?.C;
@@ -69,7 +73,7 @@ function Deck() {
           ))}
           </div>
         </div>
-        <Button variant="deckPrimary" onClick={() => go(i + 1)} disabled={i === slides.length - 1} aria-label="Próximo"><span className="hidden sm:inline">Próximo</span><ArrowRight /></Button>
+        <div className="flex items-center gap-2"><PresenterAssistant slide={slide} open={assistantOpen} onOpenChange={setAssistantOpen} /><Button variant="deckPrimary" onClick={() => go(i + 1)} disabled={i === slides.length - 1} aria-label="Próximo"><span className="hidden sm:inline">Próximo</span><ArrowRight /></Button></div>
       </nav>
     </main>
   );

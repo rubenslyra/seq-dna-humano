@@ -1,0 +1,200 @@
+[
+  {
+    "n": 1,
+    "title": "O Grande Salto",
+    "ref": "Contexto: referências 1–22 do deck.",
+    "paragraphs": [
+      "Hoje eu quero mostrar uma mudança de escala: como passamos do desafio de ler o genoma humano para o desafio de compreender o que essa informação significa.",
+      "O Projeto Genoma Humano foi um marco. Mas ele não encerrou a investigação. Ele abriu um caminho que continua sendo ampliado por novas tecnologias, novos conjuntos de dados e novas perguntas.",
+      "[PAUSA BREVE]",
+      "A ideia central desta apresentação é simples: produzir uma sequência de DNA não é o mesmo que produzir conhecimento sobre a vida ou sobre a saúde.",
+      "Entre essas duas coisas, precisamos reconstruir sequências, comparar pessoas, avaliar incertezas e interpretar evidências.",
+      "É nesse percurso que a bioinformática e as áreas correlatas se tornam indispensáveis. Vamos acompanhar essa história, primeiro pelos marcos e depois pelas camadas de análise."
+    ]
+  },
+  {
+    "n": 2,
+    "title": "Os marcos com data marcada",
+    "ref": "Fontes do deck: 1–8 · NHGRI, DOE, Nature e Science.",
+    "paragraphs": [
+      "O projeto começou em outubro de mil novecentos e noventa. A previsão era terminar em dois mil e cinco, com um orçamento estimado em aproximadamente três bilhões de dólares.",
+      "Em junho de dois mil, foi anunciado o primeiro rascunho. No ano seguinte, os resultados foram publicados nas revistas Nature e Science.",
+      "Em abril de dois mil e três, o projeto foi declarado concluído, dois anos antes da previsão inicial.",
+      "[PAUSA — ACOMPANHE A LINHA DO TEMPO]",
+      "Mas a palavra completo precisa ser entendida no contexto da época. Ainda existiam regiões que as tecnologias disponíveis não conseguiam resolver.",
+      "Em março de dois mil e vinte e dois, o consórcio T dois T apresentou uma sequência sem lacunas dos cromossomos representados na referência CHM treze. Em dois mil e vinte e três, outro trabalho completou a sequência de um cromossomo Y.",
+      "Portanto, não houve um único ponto final. Houve sucessivos avanços."
+    ]
+  },
+  {
+    "n": 3,
+    "title": "A escala do desafio",
+    "ref": "Fontes do deck: 1, 5, 6 e 7 · HGP e T2T.",
+    "paragraphs": [
+      "Para entender o tamanho desse esforço, precisamos olhar para a escala dos dados.",
+      "O genoma humano tem, aproximadamente, três bilhões e duzentos milhões de pares de bases. Podemos pensar nas bases como letras de um alfabeto biológico: A, T, C e G.",
+      "Só que o desafio não era simplesmente contar letras. Era descobrir a ordem delas, conferir a qualidade da leitura e organizar tudo em uma sequência confiável.",
+      "[PAUSA BREVE]",
+      "O Projeto Genoma Humano reuniu pesquisadores de seis países. E, mesmo com essa colaboração, a referência de dois mil e três ainda deixava cerca de oito por cento do genoma sem resolver.",
+      "Isso ajuda a perceber por que a computação não é um detalhe nesse processo. Quando lidamos com bilhões de posições e regiões repetitivas, organizar e validar a informação faz parte da própria descoberta científica."
+    ]
+  },
+  {
+    "n": 4,
+    "title": "2003: um mapa, não o destino final",
+    "ref": "Fontes do deck: 6 e 7 · T2T-CHM13; contagem de genes codificadores.",
+    "paragraphs": [
+      "Aqui, a comparação mais importante é entre a expectativa inicial e o que as evidências mostraram.",
+      "Uma estimativa que circulava no início dessa história era de cerca de cem mil genes. Na anotação apresentada para a referência T dois T, em dois mil e vinte e dois, foram identificados dezenove mil, novecentos e sessenta e nove genes codificadores de proteínas.",
+      "Essa distinção é importante: estamos falando de genes codificadores, não de todos os tipos de genes. E as contagens dependem da referência e dos critérios de anotação.",
+      "[PAUSA BREVE]",
+      "A lição não é que somos biologicamente simples. É que a complexidade humana não pode ser reduzida à quantidade de genes.",
+      "O mapa de dois mil e três foi uma conquista extraordinária. Mas ter um mapa não significa conhecer a função de cada região, nem entender todas as relações entre DNA, ambiente e doença."
+    ]
+  },
+  {
+    "n": 5,
+    "title": "Do rascunho ao genoma completo",
+    "ref": "Fontes do deck: 6–8 · Nurk et al., Science, 2022; Rhie et al., Nature, 2023.",
+    "paragraphs": [
+      "O salto de dois mil e vinte e dois aconteceu, em grande parte, porque passamos a ler trechos mais longos de DNA.",
+      "Essas leituras ajudam a atravessar regiões repetitivas que antes eram difíceis de posicionar. É como montar um quebra-cabeça em que várias peças parecem iguais: enxergar um trecho maior ajuda a descobrir onde cada peça pertence.",
+      "A referência CHM treze apresentou aproximadamente três bilhões e cinquenta e cinco milhões de pares de bases e acrescentou cerca de duzentos milhões de bases em relação às referências anteriores.",
+      "[PAUSA BREVE]",
+      "Há uma ressalva importante: CHM treze não incluía o cromossomo Y. A sequência completa do Y veio em um trabalho separado, publicado em dois mil e vinte e três, usando outro material de referência.",
+      "Esses avanços ampliaram o que conseguimos observar. Mas ler uma região antes inacessível ainda não significa compreender automaticamente sua função."
+    ]
+  },
+  {
+    "n": 6,
+    "title": "Uma queda de custo maior que a Lei de Moore",
+    "ref": "Fontes do deck: 9 e 10 · NHGRI, custo de sequenciamento por genoma.",
+    "paragraphs": [
+      "Agora vamos olhar para o custo de sequenciar um genoma.",
+      "Nos dados apresentados, o valor passa de aproximadamente noventa e cinco milhões e trezentos mil dólares, em dois mil e um, para quinhentos e vinte e cinco dólares, em dois mil e vinte e dois.",
+      "Isso corresponde a uma redução de aproximadamente cento e oitenta mil vezes.",
+      "[PAUSA — DESTAQUE OS DOIS VALORES]",
+      "O gráfico liga dois pontos históricos. Não devemos interpretar essa linha como a trajetória detalhada de todos os anos intermediários.",
+      "Também é importante separar custo de sequenciamento de custo de um atendimento completo. Análise, armazenamento, interpretação e acompanhamento clínico não se resumem a esse valor.",
+      "A consequência é uma mudança de escala: fica mais viável produzir grandes conjuntos de genomas. E, com isso, cresce o desafio de transformar um volume enorme de dados em resultados confiáveis."
+    ]
+  },
+  {
+    "n": 7,
+    "title": "Onde o Brasil entrou nessa história",
+    "ref": "Fontes do deck: 11–17 · FAPESP, PNAS, Ministério da Saúde e USP; dados datados.",
+    "paragraphs": [
+      "O Brasil também participou dessa transformação, com projetos relevantes de pesquisa e de saúde.",
+      "Um marco foi o sequenciamento da bactéria Xylella fastidiosa, publicado na Nature em dois mil. O projeto apoiado pela FAPESP reuniu uma ampla rede de laboratórios e pesquisadores.",
+      "Outro exemplo foi o Projeto Genoma do Câncer, desenvolvido pela FAPESP e pelo Instituto Ludwig, que produziu um grande conjunto de fragmentos de genes humanos.",
+      "[PAUSA BREVE]",
+      "Mais recentemente, o programa Genomas SUS trouxe essa discussão para iniciativas relacionadas à saúde pública. O slide apresenta uma meta de setenta mil genomas e um registro de vinte e um mil sequenciados até dois mil e vinte e quatro.",
+      "Esses números são um retrato datado, não uma atualização do total de hoje.",
+      "O ponto principal é que o Brasil também precisa integrar capacidade de sequenciamento, organização de dados, pesquisa e interpretação clínica."
+    ]
+  },
+  {
+    "n": 8,
+    "title": "O que o genoma não resolve sozinho",
+    "ref": "Síntese conceitual do slide 8; limites de associação e de interpretação funcional.",
+    "paragraphs": [
+      "Antes de avançar, precisamos colocar alguns limites claros.",
+      "Primeiro: correlação não é causalidade. Encontrar uma associação entre uma variante e uma doença não prova que aquela variante cause a doença.",
+      "Segundo: características complexas, como altura e diabetes, envolvem muitas variantes e também fatores ambientais. Não existe, necessariamente, uma única alteração que explique o resultado.",
+      "[PAUSA BREVE]",
+      "Terceiro: a maior parte do nosso DNA não codifica proteínas. Isso não quer dizer que seja inútil.",
+      "Parte dessas regiões participa da regulação da atividade dos genes. Mas também seria incorreto afirmar que todo o DNA não codificador tem uma função regulatória já demonstrada.",
+      "Portanto, precisamos evitar dois extremos: achar que o genoma explica tudo ou achar que o que ainda não entendemos não tem importância. A ciência trabalha justamente entre esses dois extremos."
+    ]
+  },
+  {
+    "n": 9,
+    "title": "Ler DNA não basta: é preciso organizá-lo",
+    "ref": "Fontes 18 e 22 · NHGRI e EMBL-EBI.",
+    "paragraphs": [
+      "Esta é a primeira camada: a reconstrução computacional.",
+      "O sequenciador gera leituras. Essas leituras precisam ser processadas antes de se tornarem informação utilizável.",
+      "Dependendo da pergunta, podemos montar uma sequência a partir dos fragmentos ou alinhar as leituras a uma referência que já existe. Montagem e alinhamento são operações diferentes; este esquema simplifica o percurso para facilitar a compreensão.",
+      "[PAUSA — ACOMPANHE AS QUATRO ETAPAS]",
+      "Depois, precisamos avaliar a qualidade: quais regiões foram bem cobertas, onde podem existir erros e quais trechos continuam ambíguos.",
+      "Só então faz sentido comparar sequências e acrescentar informações sobre genes e variantes.",
+      "É aqui que a bioinformática aparece de forma concreta. Ela não serve apenas para guardar arquivos. Ela ajuda a transformar dados brutos em dados que possam responder a uma pergunta biológica com confiança."
+    ]
+  },
+  {
+    "n": 10,
+    "title": "Um genoma não representa toda a humanidade",
+    "ref": "Fonte 19 · Liao et al., Nature, 10/05/2023 · doi:10.1038/s41586-023-05896-x.",
+    "paragraphs": [
+      "A segunda camada é a diversidade.",
+      "Uma única referência não representa todas as diferenças existentes entre as pessoas. Por isso, o pangenoma humano reúne múltiplas sequências em uma estrutura de referência mais abrangente.",
+      "O rascunho publicado em dois mil e vinte e três reuniu quarenta e sete indivíduos geneticamente diversos.",
+      "Ele acrescentou cento e dezenove milhões de pares de bases de sequências polimórficas em relação à referência GRCh trinta e oito. Isso não significa que cada pessoa ganhou essa quantidade de DNA.",
+      "[PAUSA BREVE]",
+      "Nos testes do artigo, a abordagem reduziu em trinta e quatro por cento os erros na descoberta de pequenas variantes com leituras curtas.",
+      "Essa é uma melhora computacional específica, não uma melhora de trinta e quatro por cento no diagnóstico clínico.",
+      "A mensagem é: a referência que escolhemos influencia o que conseguimos detectar."
+    ]
+  },
+  {
+    "n": 11,
+    "title": "Da sequência à saúde: comparar em escala",
+    "ref": "Fonte 20 · All of Us, Nature, 19/02/2024 · doi:10.1038/s41586-023-06957-x.",
+    "paragraphs": [
+      "A terceira camada é comparar em escala e quantificar a incerteza.",
+      "O conjunto do programa All of Us descrito na publicação de dois mil e vinte e quatro incluiu duzentos e quarenta e cinco mil, trezentos e oitenta e oito genomas.",
+      "O estudo identificou mais de duzentos e setenta e cinco milhões de variantes anteriormente não relatadas. Esses números pertencem àquela publicação; não são o total atual do programa.",
+      "[PAUSA BREVE]",
+      "Mas uma variante nova não é, por definição, uma variante que causa doença.",
+      "Para investigar relações com saúde, o estudo conecta informação genômica a prontuários eletrônicos ao longo do tempo.",
+      "A engenharia de dados ajuda a organizar essa integração de forma rastreável. A bioestatística ajuda a avaliar associações, vieses e incertezas.",
+      "Portanto, mais dados ampliam as possibilidades de pesquisa, mas não dispensam método, qualidade e interpretação cuidadosa."
+    ]
+  },
+  {
+    "n": 12,
+    "title": "Detectar uma variante não é explicá-la",
+    "ref": "Fontes 21 e 22 · NCBI/ClinVar e EMBL-EBI; papéis das áreas são síntese didática.",
+    "paragraphs": [
+      "A quarta camada é a interpretação.",
+      "O ClinVar registra tanto variantes de significado desconhecido quanto classificações clínicas conflitantes. Isso mostra que detectar uma diferença no DNA não encerra a investigação.",
+      "A bioinformática processa as sequências e ajuda a detectar e anotar variantes. A biologia computacional contribui com modelos sobre função e mecanismos biológicos.",
+      "A bioestatística avalia associações e incertezas. A engenharia de dados organiza a integração e a rastreabilidade das informações.",
+      "[PAUSA BREVE]",
+      "E a genética clínica interpreta essas evidências no contexto da pessoa: seus sinais, sintomas, histórico e outras informações relevantes.",
+      "Esses papéis se sobrepõem. Não são fronteiras rígidas.",
+      "Também não estamos dizendo que essas áreas nasceram com o Projeto Genoma Humano. Elas já existiam. Os avanços do sequenciamento ampliaram a necessidade de trabalhar de forma integrada."
+    ]
+  },
+  {
+    "n": 13,
+    "title": "Fontes das novas camadas",
+    "ref": "Referências 18–22 · NHGRI, Nature, NCBI/ClinVar e EMBL-EBI.",
+    "paragraphs": [
+      "Neste slide, estão as fontes públicas que sustentam as quatro camadas que acabamos de discutir.",
+      "O NHGRI ajuda a contextualizar a dificuldade de reconstruir regiões repetitivas. O artigo do pangenoma sustenta os números sobre diversidade e desempenho na detecção de variantes.",
+      "O estudo do All of Us sustenta os dados populacionais apresentados. A documentação do ClinVar mostra como são registradas as incertezas e as classificações conflitantes.",
+      "E o material do EMBL EBI apresenta a bioinformática como uma área interdisciplinar de armazenamento, recuperação e análise de informação biológica.",
+      "[PAUSA BREVE]",
+      "Vale reforçar uma distinção: os números vêm dessas publicações. Já a conexão entre as áreas é uma síntese explicativa para esta apresentação.",
+      "Não estamos apresentando uma medição do mercado de trabalho, nem uma previsão de empregos. Estamos mostrando necessidades científicas do percurso entre sequência e interpretação."
+    ]
+  },
+  {
+    "n": 14,
+    "title": "Fechamento — ciência integrada",
+    "ref": "Referências do contexto original: 1–17; novas camadas: 18–22, no slide anterior.",
+    "paragraphs": [
+      "Para concluir, eu voltaria à ideia que abriu esta apresentação: ler o genoma foi o começo de um mapa.",
+      "O Projeto Genoma Humano tornou esse mapa possível. As tecnologias posteriores preencheram lacunas, ampliaram a diversidade representada e permitiram estudar populações em uma escala muito maior.",
+      "Mas cada avanço trouxe novas perguntas.",
+      "[PAUSA BREVE]",
+      "Como reconstruir uma sequência com confiança? Como comparar pessoas sem ignorar suas diferenças? Como separar associação de causalidade? E como interpretar uma variante no contexto de um paciente?\n",
+      "Nenhuma dessas perguntas é resolvida apenas pelo sequenciador.",
+      "Por isso, bioinformática, biologia computacional, bioestatística, engenharia de dados e genética clínica precisam se conectar.",
+      "O grande salto não é apenas produzir mais dados. É transformar esses dados em conhecimento confiável, respeitando o que já sabemos e o que ainda não sabemos.",
+      "[PAUSA FINAL]",
+      "Obrigado."
+    ]
+  }
+]
