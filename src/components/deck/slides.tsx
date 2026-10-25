@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
 
 const d = (i: number) => ({ "--i": i }) as CSSProperties;
-const R = ({ n }: { n?: string }) => <span className="slide-ref">[{n}]</span>;
+const R = ({ n }: { n?: string | undefined }) => <span className="slide-ref">[{n}]</span>;
 
 function Frame({ kicker, title, children }: { kicker: string; title: ReactNode; children: ReactNode }) {
   return (
