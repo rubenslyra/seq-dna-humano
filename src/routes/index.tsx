@@ -2,7 +2,8 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { slides } from "@/components/deck/slides";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { ArrowLeft, ArrowRight, ScrollText } from "lucide-react";
 import { PresenterAssistant } from '@/components/deck/presenter-assistant';
 import { ignoreDeckKeys } from '@/lib/presenter/context';
 
