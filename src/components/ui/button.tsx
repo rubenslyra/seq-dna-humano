@@ -16,6 +16,9 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        deck: "border border-slide-line bg-slide-bg text-slide-fg hover:bg-slide-surface",
+        deckPrimary: "bg-slide-primary text-slide-bg hover:bg-slide-primary/90",
+        deckDot: "bg-transparent text-slide-fg hover:bg-slide-surface",
       },
       size: {
         default: "h-9 px-4 py-2",
