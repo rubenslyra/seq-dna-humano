@@ -74,7 +74,7 @@ function Deck() {
           ))}
           </div>
         </div>
-        <div className="flex items-center gap-2"><PresenterAssistant slide={slide} open={assistantOpen} onOpenChange={setAssistantOpen} /><Button variant="deckPrimary" onClick={() => go(i + 1)} disabled={i === slides.length - 1} aria-label="Próximo"><span className="hidden sm:inline">Próximo</span><ArrowRight /></Button></div>
+        <div className="flex items-center gap-2"><Button variant="deck" asChild><Link to="/teleprompter" aria-label="Abrir teleprompter"><ScrollText /><span className="hidden sm:inline">Teleprompter</span></Link></Button><PresenterAssistant slide={slide} open={assistantOpen} onOpenChange={setAssistantOpen} /><Button variant="deckPrimary" onClick={() => go(i + 1)} disabled={i === slides.length - 1} aria-label="Próximo"><span className="hidden sm:inline">Próximo</span><ArrowRight /></Button></div>
       </nav>
     </main>
   );
