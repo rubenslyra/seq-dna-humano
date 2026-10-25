@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { slides } from "@/components/deck/slides";
 
 export const Route = createFileRoute("/")({
-  validateSearch: (s: Record<string, unknown>) => ({ slide: Math.min(Math.max(Number(s.slide) || 1, 1), 9) }),
+  validateSearch: (s: Record<string, unknown>): { slide?: number } => ({ slide: Math.min(Math.max(Number(s["slide"]) || 1, 1), 9) }),
   head: () => ({
     meta: [
       { title: "O Grande Salto — Genoma Humano" },
@@ -18,7 +18,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Deck() {
-  const { slide } = Route.useSearch();
+  const slide = Route.useSearch().slide ?? 1;
   const navigate = useNavigate({ from: "/" });
   const i = slide - 1;
   const box = useRef<HTMLDivElement>(null);
