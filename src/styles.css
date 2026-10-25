@@ -176,6 +176,15 @@ body { font-family: var(--font-sans); }
 .slide-kicker { font-size:22px; letter-spacing:.16em; text-transform:uppercase; font-weight:700; }
 .slide-chrome { font-size:20px; line-height:1.15; white-space:nowrap; }
 .slide-ref { font-size:20px; font-weight:700; color:var(--slide-primary); vertical-align:super; margin-left:4px; }
+.layer-flow { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:32px; margin-top:64px; }
+.layer-stage { position:relative; border-top:3px solid var(--slide-line); padding-top:30px; }
+.layer-icon { width:48px; height:48px; color:var(--slide-primary); margin-bottom:24px; }
+.layer-stage:not(:last-child)::after { content:"→"; position:absolute; right:-27px; top:28px; font-size:32px; color:var(--slide-accent); }
+.layer-evidence { border-left:4px solid var(--slide-primary); padding-left:30px; }
+.layer-number { font-family:var(--font-display); font-size:108px; line-height:1; }
+.layer-source-link { color:var(--slide-primary); text-decoration:underline; text-underline-offset:5px; }
+.layer-source-link:hover { color:var(--slide-accent); }
+.layer-takeaway { margin-top:48px; padding-top:28px; border-top:1px solid var(--slide-line); max-width:1550px; }
 @keyframes rise { from { opacity:0; transform:translateY(32px); } to { opacity:1; transform:none; } }
 @keyframes grow { from { transform:scaleX(0); } to { transform:scaleX(1); } }
 @keyframes draw { to { stroke-dashoffset:0; } }
