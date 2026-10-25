@@ -13,3 +13,6 @@
 - Keep the existing 1920×1080 canvas, slide registry and global `--slide-*` tokens as the single presentation system; additional slides must use the same system to remain consistent.
 - Derive navigation bounds and displayed slide counts from the slide registry, never a literal total, so deck extensions remain reachable.
 - Use the shared Button's deck variants for presentation controls so colors remain semantic and keyboard focus stays accessible.
+- Presenter answers use a same-origin streaming TanStack server route and request-scoped AI Gateway Responses helpers; keys and prompts stay server-side to prevent client disclosure.
+- Ground presenter answers in only the selected slide and its curated script, preserving scientific qualifications instead of importing facts from other slides.
+- Persist AI provider access denials in a service-role-only circuit-breaker table so reloads cannot replay blocked calls; clear only after service restoration and explicit owner action.
