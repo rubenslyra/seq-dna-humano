@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TeleprompterRouteImport } from './routes/teleprompter'
 import { Route as ApiPresenterRouteImport } from './routes/api/presenter'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TeleprompterRoute = TeleprompterRouteImport.update({
+  id: '/teleprompter',
+  path: '/teleprompter',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPresenterRoute = ApiPresenterRouteImport.update({
@@ -25,27 +31,31 @@ const ApiPresenterRoute = ApiPresenterRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/teleprompter': typeof TeleprompterRoute
   '/api/presenter': typeof ApiPresenterRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/teleprompter': typeof TeleprompterRoute
   '/api/presenter': typeof ApiPresenterRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/teleprompter': typeof TeleprompterRoute
   '/api/presenter': typeof ApiPresenterRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/presenter'
+  fullPaths: '/' | '/teleprompter' | '/api/presenter'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/presenter'
-  id: '__root__' | '/' | '/api/presenter'
+  to: '/' | '/teleprompter' | '/api/presenter'
+  id: '__root__' | '/' | '/teleprompter' | '/api/presenter'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  TeleprompterRoute: typeof TeleprompterRoute
   ApiPresenterRoute: typeof ApiPresenterRoute
 }
 
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/teleprompter': {
+      id: '/teleprompter'
+      path: '/teleprompter'
+      fullPath: '/teleprompter'
+      preLoaderRoute: typeof TeleprompterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/presenter': {
@@ -70,6 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  TeleprompterRoute: TeleprompterRoute,
   ApiPresenterRoute: ApiPresenterRoute,
 }
 export const routeTree = rootRouteImport

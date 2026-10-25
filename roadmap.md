@@ -5,3 +5,5 @@
 - [x] Criar PDF v2 com fonte maior, espaçamento ampliado e checklist A4.
 - [x] Adicionar assistente de fala por slide com AI Gateway e verificar resposta real.
 - [x] Conferir todas as páginas do PDF e os testes do app.
+
+- [ ] Integrar rota /teleprompter no app (roteiro, play, velocidade, fonte)

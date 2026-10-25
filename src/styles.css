@@ -193,3 +193,6 @@ body { font-family: var(--font-sans); }
 .anim-grow { transform-origin:left; transform:scaleX(0); animation: grow 1.2s cubic-bezier(.2,.7,.2,1) forwards; animation-delay: calc(var(--i,0) * 110ms + 300ms); }
 .anim-draw { stroke-dasharray:1600; stroke-dashoffset:1600; animation: draw 2s ease forwards .6s; }
 @media (prefers-reduced-motion: reduce) { .anim,.anim-grow,.anim-draw { animation:none; opacity:1; transform:none; stroke-dashoffset:0; } }
+/* Teleprompter: esconder a barra de rolagem do texto durante a leitura */
+.tp-viewport { scrollbar-width: none; }
+.tp-viewport::-webkit-scrollbar { display: none; }
