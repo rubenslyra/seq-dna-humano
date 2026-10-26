@@ -1,6 +1,6 @@
 /**
  * MediaPipe Hands integration for teleprompter gesture control.
- * Loads MediaPipe via CDN to stay compatible with static bundlers (GitHub Pages / Lovable).
+ * Loads MediaPipe via CDN to stay compatible with static bundlers (GitHub Pages, Vercel, etc.).
  * Generates page-turn sound synthetically via Web Audio API — no external audio files.
  */
 
