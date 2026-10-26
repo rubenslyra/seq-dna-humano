@@ -1,10 +1,10 @@
 import { MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from '@/components/ui/dialog';
-import { slides } from './slides';
+import script from '@/lib/presenter/script.json';
 
 export function PresenterAssistant({ slide, open, onOpenChange }: { slide: number; open: boolean; onOpenChange: (open: boolean) => void }) {
-  const entry = slides[slide - 1];
+  const entry = script[slide - 1];
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>

@@ -226,7 +226,7 @@ function TeleprompterPage() {
               {entry.title}
             </h1>
             <div className="mt-8" style={{ fontSize: fontPx, lineHeight: 1.55 }}>
-              {entry.paragraphs.map((p, k) =>
+              {(entry.paragraphs ?? []).map((p, k) =>
                 p.startsWith("[PAUSA") ? (
                   <p key={k} className="font-semibold text-slide-accent">
                     {p}
