@@ -9,6 +9,7 @@ const queryClient = new QueryClient();
 const router = createRouter({
   routeTree,
   context: { queryClient },
+  basepath: "/seq-dna-humano",
 });
 
 declare module "@tanstack/react-router" {
