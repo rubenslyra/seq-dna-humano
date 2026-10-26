@@ -19,20 +19,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
-
       - run: npm ci
+<<<<<<< HEAD
 
       - name: Build site
         run: npm run build
 
+=======
+      - name: Build static site
+        run: npm run build
+>>>>>>> ca47292 (fix: switch to SPA build for GitHub Pages compatibility)
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .output/public
+          path: dist
 
   deploy:
     needs: build
