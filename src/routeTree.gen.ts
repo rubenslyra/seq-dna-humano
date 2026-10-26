@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TeleprompterRouteImport } from './routes/teleprompter'
 import { Route as ApiPresenterRouteImport } from './routes/api/presenter'
+import { Route as ApiTeleprompterScriptRouteImport } from './routes/api/teleprompter-script'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +29,50 @@ const ApiPresenterRoute = ApiPresenterRouteImport.update({
   path: '/api/presenter',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiTeleprompterScriptRoute = ApiTeleprompterScriptRouteImport.update({
+  id: '/api/teleprompter-script',
+  path: '/api/teleprompter-script',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/teleprompter': typeof TeleprompterRoute
   '/api/presenter': typeof ApiPresenterRoute
+  '/api/teleprompter-script': typeof ApiTeleprompterScriptRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/teleprompter': typeof TeleprompterRoute
   '/api/presenter': typeof ApiPresenterRoute
+  '/api/teleprompter-script': typeof ApiTeleprompterScriptRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/teleprompter': typeof TeleprompterRoute
   '/api/presenter': typeof ApiPresenterRoute
+  '/api/teleprompter-script': typeof ApiTeleprompterScriptRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/teleprompter' | '/api/presenter'
+  fullPaths:
+    '/' | '/teleprompter' | '/api/presenter' | '/api/teleprompter-script'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/teleprompter' | '/api/presenter'
-  id: '__root__' | '/' | '/teleprompter' | '/api/presenter'
+  to: '/' | '/teleprompter' | '/api/presenter' | '/api/teleprompter-script'
+  id:
+    | '__root__'
+    | '/'
+    | '/teleprompter'
+    | '/api/presenter'
+    | '/api/teleprompter-script'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   TeleprompterRoute: typeof TeleprompterRoute
   ApiPresenterRoute: typeof ApiPresenterRoute
+  ApiTeleprompterScriptRoute: typeof ApiTeleprompterScriptRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +98,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPresenterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/teleprompter-script': {
+      id: '/api/teleprompter-script'
+      path: '/api/teleprompter-script'
+      fullPath: '/api/teleprompter-script'
+      preLoaderRoute: typeof ApiTeleprompterScriptRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +112,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   TeleprompterRoute: TeleprompterRoute,
   ApiPresenterRoute: ApiPresenterRoute,
+  ApiTeleprompterScriptRoute: ApiTeleprompterScriptRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -4,6 +4,9 @@ import { ChevronLeft, ChevronRight, Pause, Play, Presentation, Type } from "luci
 import script from "@/lib/presenter/script.json";
 import { Button } from "@/components/ui/button";
 import { ignoreDeckKeys } from "@/lib/presenter/context";
+import { useHandGesture } from "@/lib/teleprompter/use-hand-gesture";
+import { GestureControls } from "@/components/teleprompter/gesture-controls";
+import type { GestureDirection } from "@/lib/teleprompter/hand-gesture";
 
 export const Route = createFileRoute("/teleprompter")({
   validateSearch: (s: Record<string, unknown>): { slide?: number } => ({
@@ -45,6 +48,16 @@ function TeleprompterPage() {
     },
     [navigate],
   );
+
+  // Gesture control integration
+  const handleGesture = useCallback(
+    (dir: GestureDirection) => {
+      if (dir === "next") go(i + 1);
+      else go(i - 1);
+    },
+    [i, go],
+  );
+  const gesture = useHandGesture(handleGesture);
 
   // Restaura preferências salvas apenas após a hidratação.
   useEffect(() => {
@@ -162,6 +175,14 @@ function TeleprompterPage() {
             {playing ? <Pause /> : <Play />}
             {playing ? "Pausar" : "Play"}
           </Button>
+          <GestureControls
+            config={gesture.config}
+            active={gesture.active}
+            ready={gesture.ready}
+            error={gesture.error}
+            onToggle={() => (gesture.active ? gesture.stop() : gesture.start())}
+            onConfigChange={(patch) => gesture.setConfig(patch)}
+          />
         </div>
       </nav>
 

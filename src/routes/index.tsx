@@ -6,6 +6,9 @@ import { Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, ScrollText } from "lucide-react";
 import { PresenterAssistant } from '@/components/deck/presenter-assistant';
 import { ignoreDeckKeys } from '@/lib/presenter/context';
+import { useHandGesture } from "@/lib/teleprompter/use-hand-gesture";
+import { GestureControls } from "@/components/teleprompter/gesture-controls";
+import type { GestureDirection } from "@/lib/teleprompter/hand-gesture";
 
 export const Route = createFileRoute("/")({
   validateSearch: (s: Record<string, unknown>): { slide?: number } => ({ slide: Math.min(Math.max(Math.trunc(Number(s["slide"])) || 1, 1), slides.length) }),
@@ -30,6 +33,16 @@ function Deck() {
   const [scale, setScale] = useState(0.5);
   const [assistantOpen, setAssistantOpen] = useState(false);
   const go = useCallback((n: number) => navigate({ search: { slide: Math.min(Math.max(n, 0), slides.length - 1) + 1 }, replace: true }), [navigate]);
+
+  // Gesture control integration
+  const handleGesture = useCallback(
+    (dir: GestureDirection) => {
+      if (dir === "next") go(i + 1);
+      else go(i - 1);
+    },
+    [i, go],
+  );
+  const gesture = useHandGesture(handleGesture);
 
   useEffect(() => {
     const el = box.current;
@@ -74,7 +87,7 @@ function Deck() {
           ))}
           </div>
         </div>
-        <div className="flex items-center gap-2"><Button variant="deck" asChild><Link to="/teleprompter" aria-label="Abrir teleprompter"><ScrollText /><span className="hidden sm:inline">Teleprompter</span></Link></Button><PresenterAssistant slide={slide} open={assistantOpen} onOpenChange={setAssistantOpen} /><Button variant="deckPrimary" onClick={() => go(i + 1)} disabled={i === slides.length - 1} aria-label="Próximo"><span className="hidden sm:inline">Próximo</span><ArrowRight /></Button></div>
+        <div className="flex items-center gap-2"><Button variant="deck" asChild><Link to="/teleprompter" aria-label="Abrir teleprompter"><ScrollText /><span className="hidden sm:inline">Teleprompter</span></Link></Button><PresenterAssistant slide={slide} open={assistantOpen} onOpenChange={setAssistantOpen} /><GestureControls config={gesture.config} active={gesture.active} ready={gesture.ready} error={gesture.error} onToggle={() => (gesture.active ? gesture.stop() : gesture.start())} onConfigChange={(patch) => gesture.setConfig(patch)} /><Button variant="deckPrimary" onClick={() => go(i + 1)} disabled={i === slides.length - 1} aria-label="Próximo"><span className="hidden sm:inline">Próximo</span><ArrowRight /></Button></div>
       </nav>
     </main>
   );
