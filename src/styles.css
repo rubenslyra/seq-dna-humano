@@ -196,3 +196,35 @@ body { font-family: var(--font-sans); }
 /* Teleprompter: esconder a barra de rolagem do texto durante a leitura */
 .tp-viewport { scrollbar-width: none; }
 .tp-viewport::-webkit-scrollbar { display: none; }
+
+/* PWA Panel: painéis ocultáveis com transição suave (Fase 2) */
+.pwa-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: var(--slide-surface);
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
+  pointer-events: none;
+}
+.pwa-panel-visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+@media (min-width: 768px) {
+  .pwa-panel {
+    position: absolute;
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 0.35s ease;
+  }
+  .pwa-panel:not(.pwa-panel-visible) {
+    opacity: 0;
+    pointer-events: none;
+  }
+}

@@ -30,8 +30,11 @@ function Deck() {
   const navigate = useNavigate({ from: "/" });
   const i = slide - 1;
   const box = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLElement>(null);
+  const hideTimer = useRef<number>(0);
   const [scale, setScale] = useState(0.5);
   const [assistantOpen, setAssistantOpen] = useState(false);
+  const [navVisible, setNavVisible] = useState(true);
   const go = useCallback((n: number) => navigate({ search: { slide: Math.min(Math.max(n, 0), slides.length - 1) + 1 }, replace: true }), [navigate]);
 
   // Gesture control integration
@@ -63,11 +66,32 @@ function Deck() {
     return () => window.removeEventListener("keydown", k);
   }, [slide, i, go, assistantOpen]);
 
+  // Auto-hide nav after inactivity; reveal on mouse proximity to bottom edge
+  useEffect(() => {
+    const show = () => {
+      setNavVisible(true);
+      window.clearTimeout(hideTimer.current);
+      hideTimer.current = window.setTimeout(() => setNavVisible(false), 3000);
+    };
+    const onMove = (e: MouseEvent) => {
+      if (e.clientY > window.innerHeight - 120) show();
+    };
+    const onTouch = () => show();
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("touchstart", onTouch);
+    show();
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("touchstart", onTouch);
+      window.clearTimeout(hideTimer.current);
+    };
+  }, []);
+
   const startX = useRef(0);
   const S = slides[i]?.C;
   if (!S) return null;
   return (
-    <main className="flex h-screen flex-col bg-slide-bg text-slide-fg">
+    <main className="relative flex h-screen flex-col bg-slide-bg text-slide-fg">
       <div ref={box} className="relative flex-1 overflow-hidden"
         onTouchStart={(e) => { const touch = e.touches[0]; if (touch) startX.current = touch.clientX; }}
         onTouchEnd={(e) => { const touch = e.changedTouches[0]; if (!touch) return; const dx = touch.clientX - startX.current; if (Math.abs(dx) > 50) go(dx < 0 ? i + 1 : i - 1); }}>
@@ -75,19 +99,27 @@ function Deck() {
           <S />
         </div>
       </div>
-      <nav aria-label="Navegação da apresentação" className="flex flex-wrap items-center justify-between gap-2 border-t border-slide-line px-3 py-3 text-sm sm:px-6">
-        <Button variant="deck" onClick={() => go(i - 1)} disabled={i === 0} aria-label="Anterior"><ArrowLeft /><span className="hidden sm:inline">Anterior</span></Button>
-        <div className="flex flex-col items-center gap-1">
-          <span className="text-xs text-slide-muted" aria-live="polite">{slide} / {slides.length}</span>
-          <div className="flex flex-wrap justify-center">
-          {slides.map((s, k) => (
-            <Button variant="deckDot" key={s.title} aria-label={s.title} aria-current={k === i ? "step" : undefined} title={s.title} onClick={() => go(k)} className="h-6 w-4 p-0 sm:w-6">
-              <span className={`h-2 w-2 rounded-full ${k === i ? "bg-slide-primary" : "bg-slide-line"}`} />
-            </Button>
-          ))}
+      <nav
+        ref={navRef}
+        aria-label="Navegação da apresentação"
+        onMouseEnter={() => { setNavVisible(true); window.clearTimeout(hideTimer.current); }}
+        onMouseLeave={() => { hideTimer.current = window.setTimeout(() => setNavVisible(false), 1500); }}
+        className={`pwa-panel border-t border-slide-line px-3 py-3 text-sm sm:px-6 ${navVisible ? "pwa-panel-visible" : ""}`}
+      >
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <Button variant="deck" onClick={() => go(i - 1)} disabled={i === 0} aria-label="Anterior"><ArrowLeft /><span className="hidden sm:inline">Anterior</span></Button>
+          <div className="flex flex-col items-center gap-1">
+            <span className="text-xs text-slide-muted" aria-live="polite">{slide} / {slides.length}</span>
+            <div className="flex flex-wrap justify-center">
+            {slides.map((s, k) => (
+              <Button variant="deckDot" key={s.title} aria-label={s.title} aria-current={k === i ? "step" : undefined} title={s.title} onClick={() => go(k)} className="h-6 w-4 p-0 sm:w-6">
+                <span className={`h-2 w-2 rounded-full ${k === i ? "bg-slide-primary" : "bg-slide-line"}`} />
+              </Button>
+            ))}
+            </div>
           </div>
+          <div className="flex items-center gap-2"><Button variant="deck" asChild><Link to="/teleprompter" aria-label="Abrir teleprompter"><ScrollText /><span className="hidden sm:inline">Teleprompter</span></Link></Button><PresenterAssistant slide={slide} open={assistantOpen} onOpenChange={setAssistantOpen} /><GestureControls config={gesture.config} active={gesture.active} ready={gesture.ready} error={gesture.error} onToggle={() => (gesture.active ? gesture.stop() : gesture.start())} onConfigChange={(patch) => gesture.setConfig(patch)} /><Button variant="deckPrimary" onClick={() => go(i + 1)} disabled={i === slides.length - 1} aria-label="Próximo"><span className="hidden sm:inline">Próximo</span><ArrowRight /></Button></div>
         </div>
-        <div className="flex items-center gap-2"><Button variant="deck" asChild><Link to="/teleprompter" aria-label="Abrir teleprompter"><ScrollText /><span className="hidden sm:inline">Teleprompter</span></Link></Button><PresenterAssistant slide={slide} open={assistantOpen} onOpenChange={setAssistantOpen} /><GestureControls config={gesture.config} active={gesture.active} ready={gesture.ready} error={gesture.error} onToggle={() => (gesture.active ? gesture.stop() : gesture.start())} onConfigChange={(patch) => gesture.setConfig(patch)} /><Button variant="deckPrimary" onClick={() => go(i + 1)} disabled={i === slides.length - 1} aria-label="Próximo"><span className="hidden sm:inline">Próximo</span><ArrowRight /></Button></div>
       </nav>
     </main>
   );

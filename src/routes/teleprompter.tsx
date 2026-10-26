@@ -37,10 +37,12 @@ function TeleprompterPage() {
   const i = slide - 1;
   const entry = script[i];
   const viewport = useRef<HTMLDivElement>(null);
+  const hideTimer = useRef<number>(0);
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState(3);
   const [fontPx, setFontPx] = useState(44);
   const [progress, setProgress] = useState(0);
+  const [navVisible, setNavVisible] = useState(true);
 
   const go = useCallback(
     (n: number) => {
@@ -72,6 +74,27 @@ function TeleprompterPage() {
   useEffect(() => {
     window.localStorage.setItem("tp-font", String(fontPx));
   }, [fontPx]);
+
+  // Auto-hide nav after inactivity; reveal on mouse proximity to top edge
+  useEffect(() => {
+    const show = () => {
+      setNavVisible(true);
+      window.clearTimeout(hideTimer.current);
+      hideTimer.current = window.setTimeout(() => setNavVisible(false), 3000);
+    };
+    const onMove = (e: MouseEvent) => {
+      if (e.clientY < 120) show();
+    };
+    const onTouch = () => show();
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("touchstart", onTouch);
+    show();
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("touchstart", onTouch);
+      window.clearTimeout(hideTimer.current);
+    };
+  }, []);
 
   // Reinicia a leitura ao trocar de slide.
   useEffect(() => {
@@ -127,7 +150,9 @@ function TeleprompterPage() {
     <main className="flex h-screen flex-col bg-slide-bg text-slide-fg">
       <nav
         aria-label="Controles do teleprompter"
-        className="flex flex-wrap items-center justify-between gap-2 border-b border-slide-line px-3 py-3 text-sm sm:px-6"
+        onMouseEnter={() => { setNavVisible(true); window.clearTimeout(hideTimer.current); }}
+        onMouseLeave={() => { hideTimer.current = window.setTimeout(() => setNavVisible(false), 1500); }}
+        className={`pwa-panel flex flex-wrap items-center justify-between gap-2 border-b border-slide-line px-3 py-3 text-sm sm:px-6 ${navVisible ? "pwa-panel-visible" : ""}`}
       >
         <div className="flex items-center gap-2">
           <Button variant="deck" asChild>
