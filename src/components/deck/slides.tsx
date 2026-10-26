@@ -4,6 +4,15 @@ import { Database, Dna, GitCompareArrows, ScanSearch } from "lucide-react";
 const d = (i: number) => ({ "--i": i }) as CSSProperties;
 const R = ({ n }: { n?: string | undefined }) => <span className="slide-ref">[{n}]</span>;
 
+// Declarado antes dos componentes que o referenciam (Cover usa slides.length)
+// para evitar Temporal Dead Zone — const não sofre hoisting de valor.
+const SLIDE_TITLES = [
+  "Capa", "Linha do tempo", "A escala", "2003", "T2T", "Custo",
+  "Brasil", "Limites", "Reconstrução", "Diversidade",
+  "Populações", "Interpretação", "Novas fontes", "Fechamento",
+];
+const SLIDE_COUNT = SLIDE_TITLES.length;
+
 function Frame({ kicker, title, children }: { kicker: string; title: ReactNode; children: ReactNode }) {
   return (
     <div className="slide-content flex flex-col">
@@ -48,7 +57,7 @@ const Cover = () => (
       Do Projeto Genoma Humano ao genoma completo — e às áreas que transformam sequências em conhecimento.
     </p>
     <div className="anim mt-14 flex gap-4" style={d(3)}>
-      {["1990 → 2003 → 2022 → 2024", `${slides.length} slides`, `${refs.length + layerSources.length} referências`].map((t) => (
+      {["1990 → 2003 → 2022 → 2024", `${SLIDE_COUNT} slides`, `${refs.length + layerSources.length} referências`].map((t) => (
         <span key={t} className="slide-chrome rounded-full border border-slide-line px-5 py-2 text-slide-muted">{t}</span>
       ))}
     </div>
