@@ -37,7 +37,7 @@ export function GestureControls({
     <>
       {/* Controles fixos - SEMPRE visíveis, sem auto-ocultar */}
       <div
-        className="fixed bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 rounded-xl border border-slide-line bg-slide-surface/95 px-4 py-3 shadow-lg backdrop-blur-sm"
+        className="fixed bottom-20 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 rounded-xl border border-slide-line bg-slide-surface/95 px-4 py-3 shadow-lg backdrop-blur-sm"
         style={{ zIndex: 9999 }}
       >
         {/* Linha superior: Passadores (-/+) e Slider */}
