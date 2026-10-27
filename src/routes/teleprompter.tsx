@@ -239,7 +239,7 @@ function TeleprompterPage() {
             {playing ? <Pause /> : <Play />}
             {playing ? "Pausar" : "Play"}
           </Button>
-          <GestureControls
+          </div>
             config={gesture.config}
             active={gesture.active}
             ready={gesture.ready}
@@ -248,7 +248,5 @@ function TeleprompterPage() {
             onConfigChange={(patch) => gesture.setConfig(patch)}
           />
         </div>
-      </footer>
-    </main>
   );
 }
