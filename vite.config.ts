@@ -7,6 +7,9 @@ export default defineConfig({
   plugins: [react(), tailwindcss(), tsconfigPaths()],
   base: "/seq-dna-humano/",
   build: {
+    rolldownOptions: {
+      external: ["@tanstack/react-query"],
+    },
     outDir: "docs",
   },
 });
