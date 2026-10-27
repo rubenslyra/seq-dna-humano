@@ -27,7 +27,7 @@ export const Route = createFileRoute("/teleprompter")({
 
 const SPEED_MIN = 1;
 const SPEED_MAX = 12;
-const SPEED_STEP_PX = 30; // px/s por nível
+const SPEED_STEP_PX = 30;
 const FONT_MIN = 28;
 const FONT_MAX = 72;
 
@@ -37,12 +37,10 @@ function TeleprompterPage() {
   const i = slide - 1;
   const entry = script[i];
   const viewport = useRef<HTMLDivElement>(null);
-  const hideTimer = useRef<number>(0);
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState(3);
   const [fontPx, setFontPx] = useState(44);
   const [progress, setProgress] = useState(0);
-  const [navVisible, setNavVisible] = useState(true);
 
   const go = useCallback(
     (n: number) => {
@@ -51,7 +49,6 @@ function TeleprompterPage() {
     [navigate],
   );
 
-  // Gesture control integration
   const handleGesture = useCallback(
     (dir: GestureDirection) => {
       if (dir === "next") go(i + 1);
@@ -61,7 +58,7 @@ function TeleprompterPage() {
   );
   const gesture = useHandGesture(handleGesture);
 
-  // Restaura preferências salvas apenas após a hidratação.
+  // Restaura preferências salvas
   useEffect(() => {
     const s = Number(window.localStorage.getItem("tp-speed"));
     const f = Number(window.localStorage.getItem("tp-font"));
@@ -75,35 +72,14 @@ function TeleprompterPage() {
     window.localStorage.setItem("tp-font", String(fontPx));
   }, [fontPx]);
 
-  // Auto-hide nav after inactivity; reveal on mouse proximity to top edge
-  useEffect(() => {
-    const show = () => {
-      setNavVisible(true);
-      window.clearTimeout(hideTimer.current);
-      hideTimer.current = window.setTimeout(() => setNavVisible(false), 3000);
-    };
-    const onMove = (e: MouseEvent) => {
-      if (e.clientY < 120) show();
-    };
-    const onTouch = () => show();
-    window.addEventListener("mousemove", onMove);
-    window.addEventListener("touchstart", onTouch);
-    show();
-    return () => {
-      window.removeEventListener("mousemove", onMove);
-      window.removeEventListener("touchstart", onTouch);
-      window.clearTimeout(hideTimer.current);
-    };
-  }, []);
-
-  // Reinicia a leitura ao trocar de slide.
+  // Reinicia a leitura ao trocar de slide
   useEffect(() => {
     const el = viewport.current;
     if (el) el.scrollTop = 0;
     setProgress(0);
   }, [slide]);
 
-  // Rolar automaticamente com requestAnimationFrame.
+  // Rolar automaticamente
   useEffect(() => {
     if (!playing) return;
     let raf = 0;
@@ -125,6 +101,7 @@ function TeleprompterPage() {
     return () => cancelAnimationFrame(raf);
   }, [playing, speed, slide]);
 
+  // Atalhos de teclado
   useEffect(() => {
     const k = (e: KeyboardEvent) => {
       if (ignoreDeckKeys(e.target, false)) return;
@@ -148,11 +125,10 @@ function TeleprompterPage() {
 
   return (
     <main className="flex h-screen flex-col bg-slide-bg text-slide-fg">
+      {/* Barra superior FIXA: navegação + indicadores (sem auto-ocultar) */}
       <nav
         aria-label="Controles do teleprompter"
-        onMouseEnter={() => { setNavVisible(true); window.clearTimeout(hideTimer.current); }}
-        onMouseLeave={() => { hideTimer.current = window.setTimeout(() => setNavVisible(false), 1500); }}
-        className={`pwa-panel flex flex-wrap items-center justify-between gap-2 border-b border-slide-line px-3 py-3 text-sm sm:px-6 ${navVisible ? "pwa-panel-visible" : ""}`}
+        className="fixed top-0 inset-x-0 z-50 flex items-center justify-between gap-2 border-b border-slide-line bg-slide-bg/95 backdrop-blur-sm px-3 py-3 text-sm sm:px-6"
       >
         <div className="flex items-center gap-2">
           <Button variant="deck" asChild>
@@ -164,60 +140,36 @@ function TeleprompterPage() {
           <Button variant="deck" onClick={() => go(i - 1)} disabled={i === 0} aria-label="Slide anterior">
             <ChevronLeft />
           </Button>
-          <span className="text-xs text-slide-muted" aria-live="polite">
-            Slide {slide} de {script.length}
+          <span className="text-xs text-slide-muted tabular-nums" aria-live="polite">
+            {slide} / {script.length}
           </span>
           <Button variant="deck" onClick={() => go(i + 1)} disabled={i === script.length - 1} aria-label="Próximo slide">
             <ChevronRight />
           </Button>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <label className="flex items-center gap-2 text-xs text-slide-muted">
-            Velocidade
-            <input
-              type="range"
-              min={SPEED_MIN}
-              max={SPEED_MAX}
-              step={1}
-              value={speed}
-              onChange={(e) => setSpeed(Number(e.target.value))}
-              className="w-28"
-              style={{ accentColor: "var(--slide-primary)" }}
-              aria-label="Velocidade de rolagem"
+        {/* Indicadores de slide (dots) */}
+        <div className="hidden md:flex items-center gap-1.5" aria-hidden>
+          {Array.from({ length: script.length }, (_, idx) => (
+            <span
+              key={idx}
+              className={`inline-block h-2 w-2 rounded-full transition-colors ${
+                idx === i ? "bg-slide-primary" : "bg-slide-muted/40"
+              }`}
             />
-            <span className="tabular-nums text-slide-fg">{speed}</span>
-          </label>
-          <div className="flex items-center gap-1 text-xs text-slide-muted">
-            <Type aria-hidden />
-            <Button variant="deck" size="sm" onClick={() => setFontPx((f) => Math.max(FONT_MIN, f - 4))} aria-label="Diminuir fonte">
-              A−
-            </Button>
-            <Button variant="deck" size="sm" onClick={() => setFontPx((f) => Math.min(FONT_MAX, f + 4))} aria-label="Aumentar fonte">
-              A+
-            </Button>
-          </div>
-          <Button variant="deckPrimary" onClick={() => setPlaying((p) => !p)} aria-label={playing ? "Pausar leitura" : "Iniciar leitura"}>
-            {playing ? <Pause /> : <Play />}
-            {playing ? "Pausar" : "Play"}
-          </Button>
-          <GestureControls
-            config={gesture.config}
-            active={gesture.active}
-            ready={gesture.ready}
-            error={gesture.error}
-            onToggle={() => (gesture.active ? gesture.stop() : gesture.start())}
-            onConfigChange={(patch) => gesture.setConfig(patch)}
-          />
+          ))}
         </div>
       </nav>
 
-      <div className="relative flex-1 overflow-hidden">
-        <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-2 bg-slide-primary" style={{ transform: `scaleX(${progress})`, transformOrigin: "left" }} aria-hidden />
+      {/* Área de conteúdo com padding para compensar barras fixas */}
+      <div className="relative flex-1 overflow-hidden pt-[52px] pb-[200px]">
+        {/* Barra de progresso */}
         <div
-          ref={viewport}
-          onScroll={onScroll}
-          className="tp-viewport h-full overflow-y-auto"
-        >
+          className="pointer-events-none absolute inset-x-0 top-0 z-10 h-2 bg-slide-primary"
+          style={{ transform: `scaleX(${progress})`, transformOrigin: "left" }}
+          aria-hidden
+        />
+        {/* Viewport do texto */}
+        <div ref={viewport} onScroll={onScroll} className="tp-viewport h-full overflow-y-auto">
           <div className="mx-auto max-w-3xl px-6" style={{ paddingTop: "38vh", paddingBottom: "55vh" }}>
             <p className="text-slide-muted" style={{ fontSize: fontPx * 0.5 }}>
               Slide {entry.n} de {script.length}
@@ -243,13 +195,60 @@ function TeleprompterPage() {
             </p>
           </div>
         </div>
-        {/* Linha de leitura e fades, acima do texto */}
+        {/* Fades e linha de leitura */}
         <div className="pointer-events-none absolute inset-0" aria-hidden>
           <div className="absolute inset-x-0 top-0 h-24" style={{ background: "linear-gradient(to bottom, var(--slide-bg), transparent)" }} />
           <div className="absolute inset-x-0 bottom-0 h-24" style={{ background: "linear-gradient(to top, var(--slide-bg), transparent)" }} />
           <div className="absolute inset-x-0 top-1/2 h-px bg-slide-primary/40" />
         </div>
       </div>
+
+      {/* Barra inferior FIXA: sliders ACIMA, controles ABAIXO */}
+      <footer className="fixed bottom-0 inset-x-0 z-50 border-t border-slide-line bg-slide-bg/95 backdrop-blur-sm px-3 pb-3 pt-2 text-sm sm:px-6">
+        {/* Linha 1: Sliders (velocidade + fonte) */}
+        <div className="flex flex-wrap items-center justify-center gap-4 mb-2">
+          <label className="flex items-center gap-2 text-xs text-slide-muted">
+            Velocidade
+            <input
+              type="range"
+              min={SPEED_MIN}
+              max={SPEED_MAX}
+              step={1}
+              value={speed}
+              onChange={(e) => setSpeed(Number(e.target.value))}
+              className="w-28"
+              style={{ accentColor: "var(--slide-primary)" }}
+              aria-label="Velocidade de rolagem"
+            />
+            <span className="tabular-nums text-slide-fg">{speed}</span>
+          </label>
+          <div className="flex items-center gap-1 text-xs text-slide-muted">
+            <Type aria-hidden />
+            <Button variant="deck" size="sm" onClick={() => setFontPx((f) => Math.max(FONT_MIN, f - 4))} aria-label="Diminuir fonte">
+              A−
+            </Button>
+            <span className="tabular-nums text-slide-fg min-w-[2ch] text-center">{fontPx}</span>
+            <Button variant="deck" size="sm" onClick={() => setFontPx((f) => Math.min(FONT_MAX, f + 4))} aria-label="Aumentar fonte">
+              A+
+            </Button>
+          </div>
+        </div>
+        {/* Linha 2: Controles (Play/Pause + Gestos) */}
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          <Button variant="deckPrimary" onClick={() => setPlaying((p) => !p)} aria-label={playing ? "Pausar leitura" : "Iniciar leitura"}>
+            {playing ? <Pause /> : <Play />}
+            {playing ? "Pausar" : "Play"}
+          </Button>
+          <GestureControls
+            config={gesture.config}
+            active={gesture.active}
+            ready={gesture.ready}
+            error={gesture.error}
+            onToggle={() => (gesture.active ? gesture.stop() : gesture.start())}
+            onConfigChange={(patch) => gesture.setConfig(patch)}
+          />
+        </div>
+      </footer>
     </main>
   );
 }

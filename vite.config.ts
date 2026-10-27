@@ -7,6 +7,6 @@ export default defineConfig({
   plugins: [react(), tailwindcss(), tsconfigPaths()],
   base: "/seq-dna-humano/",
   build: {
-    outDir: "dist",
+    outDir: "docs",
   },
 });
