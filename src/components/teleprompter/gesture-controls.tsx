@@ -38,7 +38,7 @@ export function GestureControls({
       {/* Controles fixos - SEMPRE visíveis, sem auto-ocultar */}
       <div
         className="fixed bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 rounded-xl border border-slide-line bg-slide-surface/95 px-4 py-3 shadow-lg backdrop-blur-sm"
-        style={{ zIndex: 60 }}
+        style={{ zIndex: 9999 }}
       >
         {/* Linha superior: Passadores (-/+) e Slider */}
         <div className="flex items-center gap-2">
@@ -140,7 +140,7 @@ export function GestureControls({
       {error && active && (
         <div
           className="fixed bottom-24 left-1/2 -translate-x-1/2 max-w-xs rounded-md border border-red-500/30 bg-red-950/90 px-3 py-2 text-xs text-red-200 shadow-lg backdrop-blur-sm"
-          style={{ zIndex: 70 }}
+          style={{ zIndex: 10000 }}
         >
           <div className="flex items-start gap-2">
             <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
