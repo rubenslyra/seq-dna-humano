@@ -16,6 +16,9 @@ dist-ssr
 .nitro
 *.local
 
+# GitHub Pages build output (managed on main branch)
+docs/
+
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars
