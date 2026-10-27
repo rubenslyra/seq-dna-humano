@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { Hand, AlertCircle, Volume2, VolumeX, Camera, Play, X, ArrowLeftRight, PinchIcon as Pinch } from "lucide-react";
+import { Hand, AlertCircle, Volume2, VolumeX, Camera, Play, X, ArrowLeftRight, Fingerprint as Pinch } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { GestureConfig } from "@/lib/teleprompter/hand-gesture";
 
