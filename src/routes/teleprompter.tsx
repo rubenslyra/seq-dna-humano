@@ -1,4 +1,4 @@
-﻿import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Pause, Play, Presentation, Type } from "lucide-react";
 import script from "@/lib/presenter/script.json";
@@ -8,6 +8,7 @@ import { useHandGesture } from "@/hooks/use-hand-gesture";
 import { GestureSettingsModal } from "@/components/teleprompter/gestures/GestureSettingsModal";
 import { GestureIndicator } from "@/components/teleprompter/gestures/GestureIndicator";
 import type { GestureDirection } from "@/lib/teleprompter/gestures/types";
+import { emitSlideChange, onSlideChange } from "@/lib/slide-sync-ws";
 
 export const Route = createFileRoute("/teleprompter")({
   validateSearch: (s: Record<string, unknown>): { slide?: number } => ({
@@ -16,9 +17,17 @@ export const Route = createFileRoute("/teleprompter")({
   head: () => ({
     meta: [
       { title: "Teleprompter – O Grande Salto" },
-      { name: "description", content: "Roteiro falado por slide em modo teleprompter, com velocidade e tamanho de fonte ajustáveis." },
+      {
+        name: "description",
+        content:
+          "Roteiro falado por slide em modo teleprompter, com velocidade e tamanho de fonte ajustáveis.",
+      },
       { property: "og:title", content: "Teleprompter – O Grande Salto" },
-      { property: "og:description", content: "Roteiro falado por slide em modo teleprompter, com velocidade e tamanho de fonte ajustáveis." },
+      {
+        property: "og:description",
+        content:
+          "Roteiro falado por slide em modo teleprompter, com velocidade e tamanho de fonte ajustáveis.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -46,7 +55,10 @@ function TeleprompterPage() {
 
   const go = useCallback(
     (n: number) => {
-      navigate({ search: { slide: Math.min(Math.max(n, 0), script.length - 1) + 1 }, replace: true });
+      navigate({
+        search: { slide: Math.min(Math.max(n, 0), script.length - 1) + 1 },
+        replace: true,
+      });
     },
     [navigate],
   );
@@ -69,6 +81,15 @@ function TeleprompterPage() {
   );
 
   const gesture = useHandGesture(handleGesture, canNavigate, setGesturePaused);
+
+  useEffect(() => {
+    const unsub = onSlideChange((s) => {
+      if (s !== slide) {
+        navigate({ search: { slide: s }, replace: true });
+      }
+    });
+    return unsub;
+  }, [slide, navigate]);
 
   useEffect(() => {
     const s = Number(window.localStorage.getItem("tp-speed"));
@@ -163,13 +184,23 @@ function TeleprompterPage() {
               <span className="hidden sm:inline">Apresentação</span>
             </Link>
           </Button>
-          <Button variant="deck" onClick={() => go(i - 1)} disabled={i === 0} aria-label="Slide anterior">
+          <Button
+            variant="deck"
+            onClick={() => go(i - 1)}
+            disabled={i === 0}
+            aria-label="Slide anterior"
+          >
             <ChevronLeft />
           </Button>
           <span className="text-xs text-slide-muted tabular-nums" aria-live="polite">
             {slide} / {script.length}
           </span>
-          <Button variant="deck" onClick={() => go(i + 1)} disabled={i === script.length - 1} aria-label="Próximo slide">
+          <Button
+            variant="deck"
+            onClick={() => go(i + 1)}
+            disabled={i === script.length - 1}
+            aria-label="Próximo slide"
+          >
             <ChevronRight />
           </Button>
         </div>
@@ -190,11 +221,17 @@ function TeleprompterPage() {
           aria-hidden
         />
         <div ref={viewport} onScroll={onScroll} className="tp-viewport h-full overflow-y-auto">
-          <div className="mx-auto max-w-3xl px-6" style={{ paddingTop: "38vh", paddingBottom: "55vh" }}>
+          <div
+            className="mx-auto max-w-3xl px-6"
+            style={{ paddingTop: "38vh", paddingBottom: "55vh" }}
+          >
             <p className="text-slide-muted" style={{ fontSize: fontPx * 0.5 }}>
               Slide {entry.n} de {script.length}
             </p>
-            <h1 className="font-display text-slide-fg" style={{ fontSize: fontPx * 1.5, lineHeight: 1.1 }}>
+            <h1
+              className="font-display text-slide-fg"
+              style={{ fontSize: fontPx * 1.5, lineHeight: 1.1 }}
+            >
               {entry.title}
             </h1>
             <div className="mt-8" style={{ fontSize: fontPx, lineHeight: 1.55 }}>
@@ -210,14 +247,23 @@ function TeleprompterPage() {
                 ),
               )}
             </div>
-            <p className="mt-12 border-t border-slide-line pt-4 text-slide-muted" style={{ fontSize: fontPx * 0.5 }}>
+            <p
+              className="mt-12 border-t border-slide-line pt-4 text-slide-muted"
+              style={{ fontSize: fontPx * 0.5 }}
+            >
               {entry.ref}
             </p>
           </div>
         </div>
         <div className="pointer-events-none absolute inset-0" aria-hidden>
-          <div className="absolute inset-x-0 top-0 h-24" style={{ background: "linear-gradient(to bottom, var(--slide-bg), transparent)" }} />
-          <div className="absolute inset-x-0 bottom-0 h-24" style={{ background: "linear-gradient(to top, var(--slide-bg), transparent)" }} />
+          <div
+            className="absolute inset-x-0 top-0 h-24"
+            style={{ background: "linear-gradient(to bottom, var(--slide-bg), transparent)" }}
+          />
+          <div
+            className="absolute inset-x-0 bottom-0 h-24"
+            style={{ background: "linear-gradient(to top, var(--slide-bg), transparent)" }}
+          />
           <div className="absolute inset-x-0 top-1/2 h-px bg-slide-primary/40" />
         </div>
       </div>
@@ -241,19 +287,38 @@ function TeleprompterPage() {
           </label>
           <div className="flex items-center gap-1 text-xs text-slide-muted">
             <Type aria-hidden />
-            <Button variant="deck" size="sm" onClick={() => setFontPx((f) => Math.max(FONT_MIN, f - 4))} aria-label="Diminuir fonte">
+            <Button
+              variant="deck"
+              size="sm"
+              onClick={() => setFontPx((f) => Math.max(FONT_MIN, f - 4))}
+              aria-label="Diminuir fonte"
+            >
               A-
             </Button>
             <span className="tabular-nums text-slide-fg min-w-[2ch] text-center">{fontPx}</span>
-            <Button variant="deck" size="sm" onClick={() => setFontPx((f) => Math.min(FONT_MAX, f + 4))} aria-label="Aumentar fonte">
+            <Button
+              variant="deck"
+              size="sm"
+              onClick={() => setFontPx((f) => Math.min(FONT_MAX, f + 4))}
+              aria-label="Aumentar fonte"
+            >
               A+
             </Button>
           </div>
         </div>
         <div className="flex flex-wrap items-center justify-center gap-2">
-          <Button variant="deckPrimary" onClick={() => setPlaying((p) => !p)} aria-label={playing ? "Pausar leitura" : "Iniciar leitura"} disabled={gesturePaused}>
+          <Button
+            variant="deckPrimary"
+            onClick={() => setPlaying((p) => !p)}
+            aria-label={playing ? "Pausar leitura" : "Iniciar leitura"}
+            disabled={gesturePaused}
+          >
             {playing && !gesturePaused ? <Pause /> : <Play />}
-            {playing && !gesturePaused ? "Pausar" : gesturePaused ? "Pausado (mão fechada)" : "Play"}
+            {playing && !gesturePaused
+              ? "Pausar"
+              : gesturePaused
+                ? "Pausado (mão fechada)"
+                : "Play"}
           </Button>
         </div>
       </footer>

@@ -1,9 +1,14 @@
 ﻿import { useCallback, useEffect, useRef, useState } from "react";
-import { DEFAULT_GESTURE_CONFIG, loadGestureConfig, saveGestureConfig } from "@/lib/teleprompter/gestures/config";
+import { loadGestureConfig, saveGestureConfig } from "@/lib/teleprompter/gestures/config";
+import {
+  DEFAULT_GESTURE_CONFIG,
+  type GestureConfig,
+  type GestureDirection,
+  type GestureState,
+} from "@/lib/teleprompter/gestures/types";
 import { isFist, isOpenHand } from "@/lib/teleprompter/gestures/hand";
 import { detectLateralSwipe, getSwipeDirection } from "@/lib/teleprompter/gestures/detector";
 import { playPageTurnSound } from "@/lib/teleprompter/hand-gesture";
-import type { GestureConfig, GestureDirection, GestureState } from "@/lib/teleprompter/gestures/types";
 
 interface HandLandmark {
   x: number;
@@ -66,19 +71,22 @@ export function useHandGesture(
     });
   }, []);
 
-  const flash = useCallback((s: "action" | "blocked") => {
-    clearTimeout(flashTimerRef.current);
-    setState(s);
-    flashTimerRef.current = window.setTimeout(() => {
-      if (pausedRef.current) {
-        setState("paused");
-      } else if (handDetectedRef.current) {
-        setState("idle");
-      } else {
-        setState("idle");
-      }
-    }, config.actionFlashMs);
-  }, [config.actionFlashMs]);
+  const flash = useCallback(
+    (s: "action" | "blocked") => {
+      clearTimeout(flashTimerRef.current);
+      setState(s);
+      flashTimerRef.current = window.setTimeout(() => {
+        if (pausedRef.current) {
+          setState("paused");
+        } else if (handDetectedRef.current) {
+          setState("idle");
+        } else {
+          setState("idle");
+        }
+      }, config.actionFlashMs);
+    },
+    [config.actionFlashMs],
+  );
 
   const loadScripts = useCallback(async (): Promise<boolean> => {
     if ((window as Record<string, unknown>).__mpHandsLoaded) return true;
@@ -161,7 +169,8 @@ export function useHandGesture(
     }
 
     const hands = new mp.Hands({
-      locateFile: (file: string) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/${file}`,
+      locateFile: (file: string) =>
+        `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/${file}`,
     }) as HandsInstance;
 
     hands.setOptions({
@@ -237,7 +246,12 @@ export function useHandGesture(
           gestureStartXRef.current = smoothedX;
         } else {
           const now = performance.now();
-          const swipe = detectLateralSwipe(landmarks, gestureStartXRef.current, baseThreshold, config.mirror);
+          const swipe = detectLateralSwipe(
+            landmarks,
+            gestureStartXRef.current,
+            baseThreshold,
+            config.mirror,
+          );
           if (swipe && Math.abs(swipe.delta) >= baseThreshold) {
             if (now - lastTriggerRef.current < config.cooldownMs) {
               gestureStartXRef.current = smoothedX;
@@ -313,4 +327,8 @@ export function useHandGesture(
   };
 }
 
-export type { GestureState, GestureConfig, GestureDirection } from "@/lib/teleprompter/gestures/types";
+export type {
+  GestureState,
+  GestureConfig,
+  GestureDirection,
+} from "@/lib/teleprompter/gestures/types";
