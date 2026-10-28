@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { slides } from "@/components/deck/slides";
 import { Button } from "@/components/ui/button";
 import { Link } from "lucide-react";
-import { ArrowLeft, ArrowRight, ScrollText } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ArrowRight, ScrollText } from "lucide-react";
 import { PresenterAssistant } from "@/components/deck/presenter-assistant";
 import { ignoreDeckKeys } from "@/lib/presenter/context";
 import { useHandGesture } from "@/hooks/use-hand-gesture";
